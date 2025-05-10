@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neuron Mail | AI-Powered Email Assistant</title>
+    <style>
+      :root {
+        --primary-color: #3a86ff;
+        --secondary-color: #8338ec;
+        --accent-color: #ff006e;
+        --success-color: #2ecc71;
+        --text-color: #2b2d42;
+        --light-text: #8d99ae;
+        --background: #f8f9fa;
+        --card-bg: #ffffff;
+        --border-radius: 12px;
+        --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background);
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(255,255,255,0.1)' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.5;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+
+      .subheading {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+      }
+
+      .chrome-badge {
+        background-color: white;
+        color: var(--text-color);
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        border-radius: 50px;
+        margin-bottom: 2rem;
+      }
+
+      .chrome-badge img {
+        height: 24px;
+        margin-right: 8px;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(
+          135deg,
+          var(--accent-color),
+          var(--secondary-color)
+        );
+        color: white;
+        font-weight: 600;
+        padding: 16px 36px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: var(--transition);
+        box-shadow: 0 4px 10px rgba(131, 56, 236, 0.3);
+        font-size: 1.1rem;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(131, 56, 236, 0.4);
+      }
+
+      .secondary-button {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-weight: 600;
+        padding: 16px 36px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: var(--transition);
+        margin-left: 15px;
+      }
+
+      .secondary-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .button-container {
+        margin-top: 2rem;
+      }
+
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--light-text);
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+      }
+
+      .feature-card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 30px;
+        transition: var(--transition);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: var(--primary-color);
+      }
+
+      .feature-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--text-color);
+      }
+
+      .feature-description {
+        color: var(--light-text);
+      }
+
+      .highlight-section {
+        background: linear-gradient(135deg, #8338ec11, #3a86ff11);
+        padding: 100px 0;
+      }
+
+      .ai-customization {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .ai-content {
+        flex: 1;
+        min-width: 300px;
+        padding: 30px;
+      }
+
+      .ai-image {
+        flex: 1;
+        min-width: 300px;
+        padding: 30px;
+      }
+
+      .ai-image img {
+        max-width: 100%;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+      }
+
+      .highlight-title {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        color: var(--secondary-color);
+      }
+
+      .highlight-description {
+        margin-bottom: 30px;
+        font-size: 1.1rem;
+      }
+
+      .badge {
+        display: inline-block;
+        background-color: rgba(58, 134, 255, 0.15);
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 50px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+
+      .privacy-section {
+        background-color: #f0f4f8;
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .privacy-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .privacy-title {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      .privacy-description {
+        margin-bottom: 20px;
+      }
+
+      .pricing-section {
+        padding: 100px 0;
+      }
+
+      .pricing-card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        max-width: 600px;
+        margin: 0 auto;
+        transition: var(--transition);
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .pricing-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .pricing-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .price {
+        font-size: 3rem;
+        font-weight: 700;
+      }
+
+      .price span {
+        font-size: 1rem;
+        opacity: 0.8;
+      }
+
+      .pricing-content {
+        padding: 30px;
+      }
+
+      .pricing-feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .pricing-feature i {
+        color: var(--success-color);
+        margin-right: 15px;
+      }
+
+      .pricing-cta {
+        text-align: center;
+        padding: 30px;
+      }
+
+      .trial-note {
+        font-size: 0.9rem;
+        color: var(--light-text);
+        margin-top: 15px;
+      }
+
+      footer {
+        background-color: var(--text-color);
+        color: white;
+        padding: 60px 0 30px;
+      }
+
+      .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
+
+      .footer-col ul {
+        list-style: none;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-col ul li a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-col ul li a:hover {
+        color: white;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .social-links a {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin: 0 10px;
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+      }
+
+      .copyright {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        .section {
+          padding: 60px 0;
+        }
+
+        .button-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .secondary-button {
+          margin-left: 0;
+          margin-top: 15px;
+        }
+
+        .highlight-title {
+          font-size: 1.8rem;
+        }
+
+        .ai-customization {
+          flex-direction: column;
+        }
+      }
+
+      .extension-note {
+        display: inline-block;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--text-color);
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+        <div class="hero-content">
+          <div class="extension-note">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="vertical-align: middle; margin-right: 5px"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M8 2v4" />
+              <path d="M16 2v4" />
+              <path d="M2 10h20" />
+            </svg>
+            Chrome Extension
+          </div>
+          <h1>Neuron Mail</h1>
+          <p class="subheading">
+            AI-powered email assistant that helps you organize, prioritize, and
+            respond to emails with unprecedented intelligence
+          </p>
+          <div class="chrome-badge">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="4" />
+              <line x1="21.17" y1="8" x2="12" y2="8" />
+              <line x1="3.95" y1="6.06" x2="8.54" y2="14" />
+              <line x1="10.88" y1="21.94" x2="15.46" y2="14" />
+            </svg>
+            Available exclusively as a Chrome extension
+          </div>
+          <div class="button-container">
+            <a href="https://chrome.google.com/webstore" class="cta-button">
+              Add to Chrome
+            </a>
+            <a href="terms.html" class="secondary-button">Legal Info</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Intelligent Email Management</h2>
+          <p class="section-subtitle">
+            Neuron Mail uses cutting-edge AI to transform how you handle emails,
+            making email management effortless and efficient
+          </p>
+        </div>
+
+        <div class="features">
+          <div class="feature-card">
+            <div class="feature-icon">📂</div>
+            <h3 class="feature-title">Smart Organization</h3>
+            <p class="feature-description">
+              Focus on what matters with our 24-hour window inbox. Let the AI
+              filter out promotional emails and keep only what's important.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">✍️</div>
+            <h3 class="feature-title">AI-Powered Composition</h3>
+            <p class="feature-description">
+              Write better emails faster with smart auto-completion and
+              context-aware suggestions that adapt to your writing style.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🗓️</div>
+            <h3 class="feature-title">Calendar Integration</h3>
+            <p class="feature-description">
+              Automatically create calendar events and tasks from your emails,
+              with optional approval workflow to keep you in control.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">Privacy-First Design</h3>
+            <p class="feature-description">
+              All your email data stays on your device - we don't store your
+              emails on any server, ensuring complete privacy and security.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3 class="feature-title">AI Search Assistant</h3>
+            <p class="feature-description">
+              Query your entire email history through natural language search
+              powered by advanced AI understanding.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <h3 class="feature-title">VIP Contact Management</h3>
+            <p class="feature-description">
+              Mark emails as important contacts for special treatment, ensuring
+              you never miss messages from key people.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="highlight-section">
+      <div class="container">
+        <div class="ai-customization">
+          <div class="ai-content">
+            <h2 class="highlight-title">Train Your Personal AI Assistant</h2>
+            <p class="highlight-description">
+              Neuron Mail's unique custom UI lets you train the AI to handle
+              emails exactly how you want, with real-time testing to quickly
+              iterate and find what works best for you.
+            </p>
+            <div>
+              <span class="badge">Personalized Intelligence</span>
+              <span class="badge">Real-time Testing</span>
+              <span class="badge">Fast Iteration</span>
+              <span class="badge">Complete Control</span>
+            </div>
+            <p class="highlight-description" style="margin-top: 20px">
+              Teach the AI what's important to you and take control of your
+              inbox with customizable rules and filters that adapt to your
+              preferences.
+            </p>
+          </div>
+          <div class="ai-image">
+            <img
+              src="/api/placeholder/500/300"
+              alt="AI customization interface"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="privacy-section">
+      <div class="container">
+        <div class="privacy-card">
+          <h2 class="privacy-title">Your Privacy is Our Priority</h2>
+          <p class="privacy-description">
+            At Neuron Mail, we've designed the app so that everything stays on
+            your device. We use a secure browser-based storage system
+            (IndexedDB) that's only accessible to this extension.
+          </p>
+          <div style="text-align: left; margin: 20px 0">
+            <p><strong>✅ No email content ever leaves your device</strong></p>
+            <p><strong>✅ We don't store your emails on any server</strong></p>
+            <p>
+              <strong
+                >✅ The only data we store is your email address and
+                subscription ID</strong
+              >
+            </p>
+          </div>
+          <a
+            href="terms.html#privacy"
+            class="secondary-button"
+            style="background: var(--primary-color); margin-top: 10px"
+            >Read Our Privacy Policy</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Simple, Transparent Pricing</h2>
+          <p class="section-subtitle">
+            One affordable plan with all features included
+          </p>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title">Premium Plan</h3>
+            <div class="price">$3.99<span>/month</span></div>
+          </div>
+          <div class="pricing-content">
+            <div class="pricing-feature">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2ecc71"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>Custom AI training with intuitive UI/UX</div>
+            </div>
+            <div class="pricing-feature">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2ecc71"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>AI-first email editor with smart composition</div>
+            </div>
+            <div class="pricing-feature">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2ecc71"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>Automatic calendar events & task creation</div>
+            </div>
+            <div class="pricing-feature">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2ecc71"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>VIP contact management & prioritization</div>
+            </div>
+            <div class="pricing-feature">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2ecc71"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>24-hour window inbox with focus mode</div>
+            </div>
+            <div class="pricing-feature">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2ecc71"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>AI chat that understands your email context</div>
+            </div>
+          </div>
+          <div class="pricing-cta">
+            <a href="#" class="cta-button">Start 3-Day Free Trial</a>
+            <p class="trial-note">No credit card required to try</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>Legal</h3>
+            <ul>
+              <li><a href="terms.html#privacy">Privacy Policy</a></li>
+              <li><a href="terms.html#terms">Terms of Service</a></li>
+              <li><a href="terms.html#refund">Refund Policy</a></li>
+              <li><a href="terms.html#pricing">Feature Details</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="social-links">
+            <a href="#">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                ></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+          <p class="copyright">© 2025 Neuron Mail. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
