@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Legal Information | Neuron Mail</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    />
     <style>
       :root {
         --primary-color: #3a86ff;
+        --primary-dark: #2563eb;
         --secondary-color: #8338ec;
         --accent-color: #ff006e;
         --success-color: #2ecc71;
@@ -50,6 +55,7 @@
         padding: 60px 0 80px;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
       }
 
       header::before {
@@ -64,11 +70,13 @@
       }
 
       h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         font-weight: 800;
         margin-bottom: 1rem;
         position: relative;
         z-index: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        letter-spacing: -0.5px;
       }
 
       .subheading {
@@ -78,6 +86,7 @@
         margin-bottom: 2rem;
         position: relative;
         z-index: 1;
+        font-weight: 400;
       }
 
       nav {
@@ -88,6 +97,7 @@
         position: relative;
         z-index: 10;
         overflow: hidden;
+        transition: var(--transition);
       }
 
       .nav-inner {
@@ -135,6 +145,18 @@
         height: 3px;
         background-color: var(--primary-color);
         border-radius: 3px 3px 0 0;
+        animation: slideIn 0.3s ease-out forwards;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: scaleX(0);
+          opacity: 0;
+        }
+        to {
+          transform: scaleX(1);
+          opacity: 1;
+        }
       }
 
       .content {
@@ -147,6 +169,17 @@
         box-shadow: var(--shadow);
         padding: 40px;
         margin-bottom: 40px;
+        transition: var(--transition);
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .section:not(:target) {
@@ -159,17 +192,31 @@
         margin-bottom: 1.5rem;
         padding-bottom: 0.5rem;
         border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+        position: relative;
+      }
+
+      h2::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background-color: var(--primary-color);
       }
 
       h3 {
         font-size: 1.3rem;
         margin: 1.5rem 0 1rem;
         color: var(--secondary-color);
+        display: flex;
+        align-items: center;
       }
 
       p {
         margin-bottom: 1rem;
         font-size: 1rem;
+        line-height: 1.7;
       }
 
       ul {
@@ -177,10 +224,16 @@
         margin-bottom: 1rem;
       }
 
+      ul li {
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
       a {
         color: var(--primary-color);
         text-decoration: none;
         transition: var(--transition);
+        font-weight: 500;
       }
 
       a:hover {
@@ -201,6 +254,23 @@
         border-radius: var(--border-radius);
         border-left: 4px solid var(--primary-color);
         margin: 1.5rem 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .highlight::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(58, 134, 255, 0.05) 0%,
+          rgba(58, 134, 255, 0) 100%
+        );
+        pointer-events: none;
       }
 
       .badge {
@@ -212,6 +282,7 @@
         padding: 0.2rem 0.6rem;
         border-radius: 2rem;
         margin-right: 0.5rem;
+        box-shadow: 0 2px 4px rgba(58, 134, 255, 0.1);
       }
 
       strong {
@@ -227,6 +298,7 @@
         transition: var(--transition);
         max-width: 800px;
         margin: 0 auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
       }
 
       .pricing-card:hover {
@@ -243,23 +315,43 @@
         color: white;
         padding: 30px;
         text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pricing-header::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0) 70%
+        );
+        pointer-events: none;
       }
 
       .pricing-header h3 {
         color: white;
         margin: 0;
         font-size: 1.8rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       .price {
         font-size: 3rem;
         font-weight: 700;
         margin: 15px 0 5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
 
       .price span {
         font-size: 1rem;
         opacity: 0.8;
+        font-weight: 400;
       }
 
       .feature-list {
@@ -272,6 +364,15 @@
         margin: 25px 0 15px;
         padding-bottom: 5px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+      }
+
+      .feature-list h4::before {
+        content: "✦";
+        margin-right: 8px;
+        color: var(--secondary-color);
+        font-size: 1rem;
       }
 
       .feature-list h4:first-child {
@@ -287,7 +388,14 @@
       .feature-list li {
         position: relative;
         padding: 8px 0 8px 28px;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        transition: var(--transition);
+      }
+
+      .feature-list li:hover {
+        background-color: rgba(58, 134, 255, 0.05);
+        padding-left: 32px;
       }
 
       .feature-list li:before {
@@ -296,6 +404,15 @@
         left: 0;
         color: var(--success-color);
         font-weight: bold;
+        background-color: rgba(46, 204, 113, 0.1);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        margin-left: 4px;
       }
 
       .feature-badge {
@@ -308,11 +425,14 @@
         border-radius: 2rem;
         margin-right: 5px;
         text-transform: uppercase;
+        box-shadow: 0 1px 3px rgba(58, 134, 255, 0.1);
       }
 
       .pricing-cta {
         padding: 20px 30px 30px;
         text-align: center;
+        background-color: rgba(248, 249, 250, 0.5);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
       }
 
       .cta-button {
@@ -329,6 +449,24 @@
         text-decoration: none;
         transition: var(--transition);
         box-shadow: 0 4px 10px rgba(131, 56, 236, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.2) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transition: all 0.6s ease;
       }
 
       .cta-button:hover {
@@ -336,6 +474,10 @@
         box-shadow: 0 6px 15px rgba(131, 56, 236, 0.4);
         text-decoration: none;
         color: white;
+      }
+
+      .cta-button:hover::before {
+        left: 100%;
       }
 
       .pricing-note {
@@ -350,6 +492,23 @@
         padding: 40px 0;
         margin-top: 40px;
         text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color),
+          var(--secondary-color),
+          var(--accent-color)
+        );
       }
 
       footer p {
@@ -368,6 +527,18 @@
         color: white;
         opacity: 0.8;
         transition: var(--transition);
+        position: relative;
+      }
+
+      .footer-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: white;
+        transition: var(--transition);
       }
 
       .footer-links a:hover {
@@ -375,6 +546,11 @@
         text-decoration: none;
       }
 
+      .footer-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Responsive styles */
       @media (max-width: 768px) {
         h1 {
           font-size: 2rem;
@@ -400,6 +576,53 @@
         .section {
           padding: 25px;
         }
+
+        .pricing-header h3 {
+          font-size: 1.5rem;
+        }
+
+        .price {
+          font-size: 2.5rem;
+        }
+      }
+
+      /* Animation for section transitions */
+      .section {
+        animation-delay: calc(var(--index) * 0.1s);
+      }
+
+      #privacy {
+        --index: 1;
+      }
+
+      #pricing {
+        --index: 2;
+      }
+
+      #terms {
+        --index: 3;
+      }
+
+      #refund {
+        --index: 4;
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Improved accessibility */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
       }
     </style>
   </head>
@@ -517,9 +740,6 @@
               <h3>Premium Plan</h3>
               <div class="price">$3.99<span>/month</span></div>
             </div>
-            custom UI to train how your ai behaves in different contexts with
-            real time testing so you can itterate fast to find the the that
-            works best for you
             <div class="feature-list">
               <h4>AI Email Management</h4>
               <ul>
@@ -541,17 +761,20 @@
                   important contacts for special treatment
                 </li>
                 <li>
-                  Customizable Inbox get control on what emails reach your
-                  extensions inbox ,you can chose to just fetch emails from
-                  chosen people so any emails that you dont have in the list
-                  wont reach your extensions inbox or you can chose to get all
-                  of the emails (the subsciptions and promotional emails are
-                  filtered out even in this case like) and even in this case you
-                  can mark mark emails as important seperatly you get instantly
-                  context rich templates as soon as their message arrives with a
-                  voice message (tts) and a pop up with most of the draft based
-                  on your calendar data tasks data and any info you have on
-                  information already written
+                  <span class="feature-badge">Inbox</span> Customizable Inbox
+                  get control on what emails reach your extensions inbox, you
+                  can chose to just fetch emails from chosen people so any
+                  emails that you dont have in the list wont reach your
+                  extensions inbox or you can chose to get all of the emails
+                  (the subsciptions and promotional emails are filtered out even
+                  in this case) and even in this case you can mark emails as
+                  important separately
+                </li>
+                <li>
+                  <span class="feature-badge">Context</span> Instantly context
+                  rich templates as soon as their message arrives with a voice
+                  message (TTS) and a pop up with most of the draft based on
+                  your calendar data, tasks data and any info you have
                 </li>
               </ul>
 
@@ -559,24 +782,18 @@
               <ul>
                 <li>
                   <span class="feature-badge">Auto</span> AI creates calendar
-                  events from emails (if you dont like what ai choses you can
-                  tell it exactly what you want by using our our testing ui ux
-                  and you can in real time test if ai understood your
-                  requirement and keep cycling through rules until you find what
-                  works for you )
+                  events from emails (if you dont like what AI chooses you can
+                  tell it exactly what you want by using our testing UI/UX and
+                  you can in real time test if AI understood your requirement)
                 </li>
                 <li>
                   <span class="feature-badge">Tasks</span> Generate tasks based
-                  on email content (if you dont like what ai choses you can tell
-                  it exactly what you want by using our our testing ui ux and
-                  you can in real time test if ai understood your requirement
-                  and keep cycling through rules until you find what works for
-                  you )
+                  on email content (with real-time testing to ensure AI
+                  understands your requirements)
                 </li>
                 <li>
                   <span class="feature-badge">Approval</span>
-                  Both of the features you can opt out of in settings Optional
-                  manual approval workflow i want you to have all the control
+                  Optional manual approval workflow - you have complete control
                 </li>
                 <li>
                   <span class="feature-badge">Context</span> AI aware of your
@@ -685,7 +902,7 @@
             <a href="https://paddle.com" target="_blank">Paddle</a>. To request
             a refund, please <strong>contact me the dev </strong> at
             <strong>rahulmishra7802@gmail.com</strong> with your order ID and
-            the reason for your request. i'll work with Paddle to process your
+            the reason for your request. I'll work with Paddle to process your
             refund as quickly as possible.
           </p>
 
@@ -714,13 +931,16 @@
     </footer>
 
     <script>
-      // Simple script to handle nav tab activation
+      // Enhanced script to handle nav tab activation with smooth transitions
       document.addEventListener("DOMContentLoaded", function () {
         const navLinks = document.querySelectorAll("nav a");
+        const sections = document.querySelectorAll(".section");
 
         // Set active tab based on hash or default to first tab
         function setActiveTab() {
           const hash = window.location.hash || "#privacy";
+
+          // Update active tab
           navLinks.forEach((link) => {
             if (link.getAttribute("href") === hash) {
               link.classList.add("active");
@@ -728,6 +948,20 @@
               link.classList.remove("active");
             }
           });
+
+          // Ensure the section is visible
+          const targetSection = document.querySelector(hash);
+          if (targetSection) {
+            // Reset animations
+            sections.forEach((section) => {
+              section.style.animation = "none";
+              section.offsetHeight; // Trigger reflow
+              section.style.animation = null;
+            });
+
+            // Apply animation to the target section
+            targetSection.style.animation = "fadeIn 0.5s ease-out forwards";
+          }
         }
 
         // Initial setup
@@ -736,11 +970,45 @@
         // Update on hash change
         window.addEventListener("hashchange", setActiveTab);
 
-        // Handle clicks
+        // Handle clicks with smooth scrolling
         navLinks.forEach((link) => {
-          link.addEventListener("click", function () {
+          link.addEventListener("click", function (e) {
+            // Update active class
             navLinks.forEach((l) => l.classList.remove("active"));
             this.classList.add("active");
+
+            // Get the target section
+            const targetId = this.getAttribute("href");
+            const targetSection = document.querySelector(targetId);
+
+            if (targetSection) {
+              e.preventDefault();
+
+              // Smooth scroll to section
+              const navHeight = document.querySelector("nav").offsetHeight;
+              const targetPosition =
+                targetSection.getBoundingClientRect().top +
+                window.pageYOffset -
+                navHeight -
+                20;
+
+              window.scrollTo({
+                top: targetPosition,
+                behavior: "smooth",
+              });
+
+              // Update URL without scrolling
+              history.pushState(null, null, targetId);
+
+              // Trigger animation
+              sections.forEach((section) => {
+                section.style.animation = "none";
+                section.offsetHeight; // Trigger reflow
+                section.style.animation = null;
+              });
+
+              targetSection.style.animation = "fadeIn 0.5s ease-out forwards";
+            }
           });
         });
       });
