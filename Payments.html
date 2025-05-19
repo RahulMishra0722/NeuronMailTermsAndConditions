@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeuronMail Premium - Sandbox</title>
+    <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .purchase-btn {
+        background-color: #007cba;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+      }
+      .purchase-btn:hover {
+        background-color: #005a87;
+      }
+      .success-message {
+        display: none;
+        background-color: #d4edda;
+        color: #155724;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+      .sandbox-notice {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ffeeba;
+      }
+      .feature-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .feature-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .feature-list li:before {
+        content: "✓";
+        color: #28a745;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sandbox-notice">
+        <strong>🧪 SANDBOX MODE</strong> - This is a test payment. No real money
+        will be charged.
+      </div>
+
+      <h1>Upgrade to NeuronMail Premium</h1>
+      <p>Unlock advanced email management features</p>
+
+      <ul class="feature-list">
+        <li>Unlimited email templates</li>
+        <li>Advanced AI features</li>
+        <li>Priority support</li>
+        <li>Custom integrations</li>
+      </ul>
+
+      <div id="purchase-section">
+        <h3>Premium Plan - $9.99/month</h3>
+        <button id="purchase-btn" class="purchase-btn">
+          Purchase Now (TEST MODE)
+        </button>
+      </div>
+
+      <div id="success-message" class="success-message">
+        <h2>🎉 Test Payment Successful!</h2>
+        <p>Your sandbox purchase has been completed.</p>
+        <p>
+          <strong>Next step:</strong> Go back to the NeuronMail extension and
+          log in with the email you used to activate premium features.
+        </p>
+        <p>
+          <strong>Test Email Used:</strong> <span id="customer-email"></span>
+        </p>
+        <div
+          style="
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e7f3ff;
+            border-radius: 5px;
+          "
+        >
+          <small
+            ><strong>For testing:</strong> Use this email when logging into the
+            extension to verify premium access.</small
+          >
+        </div>
+      </div>
+
+      <div style="margin-top: 30px; font-size: 12px; color: #666">
+        <p><strong>Sandbox Test Cards:</strong></p>
+        <p>• Visa: 4000 0000 0000 0002</p>
+        <p>• Mastercard: 5555 5555 5555 4444</p>
+        <p>• Any CVV, any future expiry date</p>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Paddle in sandbox mode
+      Paddle.Environment.set("sandbox");
+      Paddle.Setup({
+        vendor: `pdl_sdbx_apikey_01jvme4y7yk7qtthse7fk3yy54_yyb9ygy6FgNhBcXkmqKAAn_Alt`, // Replace with your sandbox vendor ID
+      });
+
+      let purchaseData = null;
+
+      document.getElementById("purchase-btn").addEventListener("click", () => {
+        Paddle.Checkout.open({
+          product: `pro_01jvm7jva8xejzhnsmmwgy9dcv`, // Replace with your sandbox product ID
+          email: "test@example.com", // Pre-fill for testing
+          country: "US",
+          postcode: "10001",
+          successCallback: function (data) {
+            console.log("Sandbox payment successful:", data);
+            purchaseData = data;
+
+            // Save purchase data (in real app, send to your backend)
+            savePurchaseData(data);
+
+            // Show success message
+            document.getElementById("purchase-section").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+            document.getElementById("customer-email").textContent =
+              data.checkout.email;
+          },
+          closeCallback: function (data) {
+            console.log("Checkout closed:", data);
+          },
+        });
+      });
+
+      function savePurchaseData(data) {
+        // In a real application, you'd send this to your backend
+        console.log("Saving purchase data:", {
+          checkout_id: data.checkout.id,
+          email: data.checkout.email,
+          order_id: data.order ? data.order.id : null,
+          amount: data.checkout.total,
+          currency: data.checkout.currency,
+          status: "completed",
+          timestamp: new Date().toISOString(),
+        });
+
+        // For testing, save to localStorage
+        const purchase = {
+          email: data.checkout.email,
+          checkout_id: data.checkout.id,
+          order_id: data.order ? data.order.id : null,
+          status: "completed",
+          created_at: new Date().toISOString(),
+        };
+
+        // Save to localStorage for testing
+        let purchases = JSON.parse(
+          localStorage.getItem("sandbox_purchases") || "[]"
+        );
+        purchases.push(purchase);
+        localStorage.setItem("sandbox_purchases", JSON.stringify(purchases));
+
+        // Optional: Send to your backend for testing
+        // fetch('https://your-backend.com/api/sandbox-purchase', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(purchase)
+        // });
+      }
+
+      // Debug function to check stored purchases
+      window.checkSandboxPurchases = function () {
+        const purchases = JSON.parse(
+          localStorage.getItem("sandbox_purchases") || "[]"
+        );
+        console.log("Stored sandbox purchases:", purchases);
+        return purchases;
+      };
+    </script>
+  </body>
+</html>
