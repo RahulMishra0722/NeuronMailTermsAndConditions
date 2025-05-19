@@ -3,211 +3,196 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuronMail Premium - Sandbox</title>
+    <title>Paddle Checkout Sandbox Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        max-width: 600px;
-        margin: 50px auto;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
         padding: 20px;
-        background-color: #f5f5f5;
       }
       .container {
-        background: white;
+        background: #f9f9f9;
+        border-radius: 8px;
         padding: 30px;
-        border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
-      .purchase-btn {
-        background-color: #007cba;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        width: 100%;
+      h1 {
+        color: #2d3748;
+        margin-bottom: 24px;
       }
-      .purchase-btn:hover {
-        background-color: #005a87;
-      }
-      .success-message {
-        display: none;
-        background-color: #d4edda;
-        color: #155724;
+      .product {
+        background: white;
+        border-radius: 8px;
         padding: 20px;
-        border-radius: 5px;
-        margin-top: 20px;
-      }
-      .sandbox-notice {
-        background-color: #fff3cd;
-        color: #856404;
-        padding: 15px;
-        border-radius: 5px;
         margin-bottom: 20px;
-        border: 1px solid #ffeeba;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      .feature-list {
-        list-style-type: none;
-        padding: 0;
+      .product-info {
+        flex: 1;
       }
-      .feature-list li {
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
+      .product-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        color: #2d3748;
       }
-      .feature-list li:before {
-        content: "✓";
-        color: #28a745;
-        font-weight: bold;
-        margin-right: 10px;
+      .product-description {
+        color: #718096;
+        margin: 0;
+      }
+      .product-price {
+        font-size: 22px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 16px 0;
+      }
+      .btn {
+        background-color: #4299e1;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      .btn:hover {
+        background-color: #3182ce;
+      }
+      .sandbox-note {
+        background-color: #feebc8;
+        border-left: 4px solid #ed8936;
+        padding: 12px 16px;
+        margin-top: 24px;
+        border-radius: 4px;
+      }
+      .sandbox-note h3 {
+        margin-top: 0;
+        color: #c05621;
+      }
+      .product-image {
+        width: 120px;
+        height: 120px;
+        background-color: #edf2f7;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 20px;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="sandbox-notice">
-        <strong>🧪 SANDBOX MODE</strong> - This is a test payment. No real money
-        will be charged.
-      </div>
+      <h1>Paddle Checkout Demo (Sandbox)</h1>
 
-      <h1>Upgrade to NeuronMail Premium</h1>
-      <p>Unlock advanced email management features</p>
-
-      <ul class="feature-list">
-        <li>Unlimited email templates</li>
-        <li>Advanced AI features</li>
-        <li>Priority support</li>
-        <li>Custom integrations</li>
-      </ul>
-
-      <div id="purchase-section">
-        <h3>Premium Plan - $9.99/month</h3>
-        <button id="purchase-btn" class="purchase-btn">
-          Purchase Now (TEST MODE)
-        </button>
-      </div>
-
-      <div id="success-message" class="success-message">
-        <h2>🎉 Test Payment Successful!</h2>
-        <p>Your sandbox purchase has been completed.</p>
-        <p>
-          <strong>Next step:</strong> Go back to the NeuronMail extension and
-          log in with the email you used to activate premium features.
-        </p>
-        <p>
-          <strong>Test Email Used:</strong> <span id="customer-email"></span>
-        </p>
-        <div
-          style="
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #e7f3ff;
-            border-radius: 5px;
-          "
-        >
-          <small
-            ><strong>For testing:</strong> Use this email when logging into the
-            extension to verify premium access.</small
-          >
+      <div class="product">
+        <div class="product-info">
+          <h2 class="product-title">Premium Subscription</h2>
+          <p class="product-description">
+            Access to all premium features, unlimited usage, priority support
+          </p>
+          <p class="product-price">$29.99/month</p>
+          <button class="btn checkout-button" data-product="premium">
+            Subscribe Now
+          </button>
+        </div>
+        <div class="product-image">
+          <img src="/api/placeholder/120/120" alt="Premium Plan" />
         </div>
       </div>
 
-      <div style="margin-top: 30px; font-size: 12px; color: #666">
-        <p><strong>Sandbox Test Cards:</strong></p>
-        <p>• Visa: 4000 0000 0000 0002</p>
-        <p>• Mastercard: 5555 5555 5555 4444</p>
-        <p>• Any CVV, any future expiry date</p>
+      <div class="product">
+        <div class="product-info">
+          <h2 class="product-title">Annual Plan (20% off)</h2>
+          <p class="product-description">
+            All premium features with 20% discount when billed annually
+          </p>
+          <p class="product-price">$287.88/year</p>
+          <button class="btn checkout-button" data-product="annual">
+            Subscribe Annually
+          </button>
+        </div>
+        <div class="product-image">
+          <img src="/api/placeholder/120/120" alt="Annual Plan" />
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-info">
+          <h2 class="product-title">Lifetime Access</h2>
+          <p class="product-description">
+            One-time payment for permanent access to all current and future
+            features
+          </p>
+          <p class="product-price">$499.99</p>
+          <button class="btn checkout-button" data-product="lifetime">
+            Buy Lifetime
+          </button>
+        </div>
+        <div class="product-image">
+          <img src="/api/placeholder/120/120" alt="Lifetime Access" />
+        </div>
+      </div>
+
+      <div class="sandbox-note">
+        <h3>Sandbox Testing Mode</h3>
+        <p>
+          This checkout is running in Paddle's sandbox environment for testing.
+          No actual charges will be made.
+        </p>
+        <p>For testing, you can use the following card details:</p>
+        <ul>
+          <li>Card Number: 4242 4242 4242 4242</li>
+          <li>Expiry Date: Any future date</li>
+          <li>CVC: Any 3 digits</li>
+        </ul>
       </div>
     </div>
 
     <script>
-      // Initialize Paddle Billing (new API)
-      Paddle.Initialize({
-        environment: "sandbox", // or 'production' for live
-        pwCustomer: null, // Optional: customer ID if you have one
-        pwAuth: null, // Optional: auth token if you have one
-        eventCallback: function (event) {
-          console.log("Paddle event:", event);
+      // Initialize Paddle in sandbox mode
+      Paddle.Environment.set("sandbox");
 
-          if (event.name === "checkout.completed") {
-            console.log("Payment completed:", event.data);
-            savePurchaseData(event.data);
+      // Replace this with your actual Paddle sandbox vendor ID
+      Paddle.Setup({ vendor: 31565 });
 
-            // Show success message
-            document.getElementById("purchase-section").style.display = "none";
-            document.getElementById("success-message").style.display = "block";
-            document.getElementById("customer-email").textContent =
-              event.data.customer.email;
-          }
-        },
-      });
-
-      let purchaseData = null;
-
-      document.getElementById("purchase-btn").addEventListener("click", () => {
-        Paddle.Checkout.open({
-          items: [
-            {
-              priceId: "pri_01jvm7jva8xejzhnsmmwgy9dcv", // Replace with your price ID
-              quantity: 1,
-            },
-          ],
-          customer: {
-            email: "test@example.com", // Pre-fill for testing
-          },
-          settings: {
-            displayMode: "overlay",
-            theme: "light",
-            locale: "en",
-          },
-        });
-      });
-
-      function savePurchaseData(data) {
-        // In a real application, you'd send this to your backend
-        console.log("Saving purchase data:", {
-          transaction_id: data.transaction_id,
-          email: data.customer.email,
-          amount: data.totals.total,
-          currency: data.currency_code,
-          status: "completed",
-          timestamp: new Date().toISOString(),
-        });
-
-        // For testing, save to localStorage
-        const purchase = {
-          email: data.customer.email,
-          transaction_id: data.transaction_id,
-          amount: data.totals.total,
-          currency: data.currency_code,
-          status: "completed",
-          created_at: new Date().toISOString(),
-        };
-
-        // Save to localStorage for testing
-        let purchases = JSON.parse(
-          localStorage.getItem("sandbox_purchases") || "[]"
-        );
-        purchases.push(purchase);
-        localStorage.setItem("sandbox_purchases", JSON.stringify(purchases));
-
-        // Optional: Send to your backend for testing
-        // fetch('https://your-backend.com/api/sandbox-purchase', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(purchase)
-        // });
-      }
-
-      // Debug function to check stored purchases
-      window.checkSandboxPurchases = function () {
-        const purchases = JSON.parse(
-          localStorage.getItem("sandbox_purchases") || "[]"
-        );
-        console.log("Stored sandbox purchases:", purchases);
-        return purchases;
+      // Product IDs for sandbox testing
+      // Replace these with your actual Paddle product IDs from your sandbox account
+      const productIds = {
+        premium: `pro_01jvm7jva8xejzhnsmmwgy9dcv`, // Monthly subscription
       };
+
+      // Set up checkout buttons
+      document.querySelectorAll(".checkout-button").forEach((button) => {
+        button.addEventListener("click", function () {
+          const productType = this.getAttribute("data-product");
+          const productId = productIds[productType];
+
+          Paddle.Checkout.open({
+            product: productId,
+            email: "", // Optional: Pre-fill customer email
+            successCallback: function (data) {
+              console.log("Checkout complete!");
+              console.log(data);
+              alert(
+                "Checkout completed successfully! Order ID: " +
+                  data.checkout.order.order_id
+              );
+            },
+          });
+        });
+      });
     </script>
   </body>
 </html>
