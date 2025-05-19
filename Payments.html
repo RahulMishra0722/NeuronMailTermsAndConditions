@@ -122,35 +122,44 @@
     </div>
 
     <script>
-      // Initialize Paddle in sandbox mode
-      Paddle.Environment.set("sandbox");
-      Paddle.Setup({
-        vendor: 31565, // Replace with your sandbox vendor ID
+      // Initialize Paddle Billing (new API)
+      Paddle.Initialize({
+        environment: "sandbox", // or 'production' for live
+        pwCustomer: null, // Optional: customer ID if you have one
+        pwAuth: null, // Optional: auth token if you have one
+        eventCallback: function (event) {
+          console.log("Paddle event:", event);
+
+          if (event.name === "checkout.completed") {
+            console.log("Payment completed:", event.data);
+            savePurchaseData(event.data);
+
+            // Show success message
+            document.getElementById("purchase-section").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+            document.getElementById("customer-email").textContent =
+              event.data.customer.email;
+          }
+        },
       });
 
       let purchaseData = null;
 
       document.getElementById("purchase-btn").addEventListener("click", () => {
         Paddle.Checkout.open({
-          product: `pro_01jvm7jva8xejzhnsmmwgy9dcv`, // Replace with your sandbox product ID
-          email: "test@example.com", // Pre-fill for testing
-          country: "US",
-          postcode: "10001",
-          successCallback: function (data) {
-            console.log("Sandbox payment successful:", data);
-            purchaseData = data;
-
-            // Save purchase data (in real app, send to your backend)
-            savePurchaseData(data);
-
-            // Show success message
-            document.getElementById("purchase-section").style.display = "none";
-            document.getElementById("success-message").style.display = "block";
-            document.getElementById("customer-email").textContent =
-              data.checkout.email;
+          items: [
+            {
+              priceId: "pri_01jvm7jva8xejzhnsmmwgy9dcv", // Replace with your price ID
+              quantity: 1,
+            },
+          ],
+          customer: {
+            email: "test@example.com", // Pre-fill for testing
           },
-          closeCallback: function (data) {
-            console.log("Checkout closed:", data);
+          settings: {
+            displayMode: "overlay",
+            theme: "light",
+            locale: "en",
           },
         });
       });
@@ -158,20 +167,20 @@
       function savePurchaseData(data) {
         // In a real application, you'd send this to your backend
         console.log("Saving purchase data:", {
-          checkout_id: data.checkout.id,
-          email: data.checkout.email,
-          order_id: data.order ? data.order.id : null,
-          amount: data.checkout.total,
-          currency: data.checkout.currency,
+          transaction_id: data.transaction_id,
+          email: data.customer.email,
+          amount: data.totals.total,
+          currency: data.currency_code,
           status: "completed",
           timestamp: new Date().toISOString(),
         });
 
         // For testing, save to localStorage
         const purchase = {
-          email: data.checkout.email,
-          checkout_id: data.checkout.id,
-          order_id: data.order ? data.order.id : null,
+          email: data.customer.email,
+          transaction_id: data.transaction_id,
+          amount: data.totals.total,
+          currency: data.currency_code,
           status: "completed",
           created_at: new Date().toISOString(),
         };
